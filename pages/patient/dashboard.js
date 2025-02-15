@@ -16,7 +16,7 @@ export default function Dashboard() {
     conditions: query.conditions || "",
   });
 
-  // Dashboard states
+  // Dashboard states for chart and labels
   const [selectedMetric, setSelectedMetric] = useState("heartRate");
   const dummyData = {
     heartRate: [72, 75, 73, 76, 74, 71, 75, 78, 74, 72, 77, 75, 73, 76],
@@ -41,11 +41,19 @@ export default function Dashboard() {
   const switchTab = (tab) => setActiveTab(tab);
   const [showChatbot, setShowChatbot] = useState(false);
 
+  // For demo purposes, we can define some dummy AI suggestions.
+  const dummySuggestions = [
+    "Drink more water",
+    "Take a 10-minute walk",
+    "Add more greens to your diet",
+    "Practice deep breathing",
+  ];
+
   return (
     <HomePage
       patientName={patientName}
       healthData={healthData}
-      aiSuggestions={null}
+      aiSuggestions={dummySuggestions}  // Now we pass dummy suggestions so the cards appear
       selectedMetric={selectedMetric}
       dummyData={dummyData}
       metricLabels={metricLabels}

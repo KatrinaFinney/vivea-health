@@ -1,52 +1,41 @@
 import { useState } from "react";
 
 export default function Chatbot() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-    // Append the user's message
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: "user", text: input },
-    ]);
-    // For now, simulate a bot response by echoing the message after a delay
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "bot", text: `Echo: ${input}` },
-      ]);
-    }, 1000);
-    setInput("");
+  const handleSend = () => {
+    if (message.trim() !== "") {
+      // For now, simply add the message to the chat history.
+      setChatHistory([...chatHistory, message]);
+      setMessage("");
+    }
   };
 
   return (
-    <div className="bg-white border rounded-lg p-4 fixed bottom-24 right-4 w-80 max-h-96 overflow-y-auto shadow-lg">
-      <div className="mb-2 text-lg font-semibold">Chatbot</div>
-      <div className="space-y-2 mb-4">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`p-2 rounded ${
-              msg.sender === "user" ? "bg-blue-100 text-right" : "bg-gray-100 text-left"
-            }`}
-          >
-            {msg.text}
-          </div>
-        ))}
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg h-full flex flex-col">
+      <div className="flex-1 mb-4 overflow-auto text-gray-900 dark:text-gray-100">
+        {chatHistory.length === 0 ? (
+          <p className="text-sm">Your chat messages will appear here.</p>
+        ) : (
+          chatHistory.map((msg, idx) => (
+            <p key={idx} className="mb-2 text-sm">
+              {msg}
+            </p>
+          ))
+        )}
       </div>
       <div className="flex">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-grow border rounded-l-md p-2"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Ask a health question?"
+          className="flex-1 p-2 border rounded-l-md focus:outline-none"
         />
         <button
-          onClick={sendMessage}
-          className="bg-primary text-white p-2 rounded-r-md"
+          onClick={handleSend}
+          className="bg-teal-700 text-white px-4 rounded-r-md"
         >
           Send
         </button>

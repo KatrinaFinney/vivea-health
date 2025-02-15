@@ -1,7 +1,7 @@
 // src/components/HomePage.js
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
-import Chatbot from "../../src/components/Chatbot"; // Adjust the path if needed
+import Chatbot from "../../src/components/Chatbot"; // Adjust path if needed
 
 export default function HomePage({
   patientName,
@@ -98,6 +98,13 @@ export default function HomePage({
         </div>
       </nav>
 
+      {/* Chatbot Window */}
+      {showChatbot && (
+        <div className="fixed bottom-20 right-4 z-40 w-[400px] h-[500px]">
+          <Chatbot />
+        </div>
+      )}
+
       {/* Main Content */}
       <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Montserrat, sans-serif" }}>
         {/* Greeting */}
@@ -112,7 +119,7 @@ export default function HomePage({
 
         {/* Health Cards */}
         <div className="overflow-x-auto hide-scrollbar mb-6">
-          <div className="flex gap-4 justify-center" style={{ width: "100%" }}>
+          <div className="flex gap-4 justify-center w-full">
             {/* Heart Rate Card */}
             <div
               onClick={() => onMetricChange("heartRate")}
@@ -196,11 +203,35 @@ export default function HomePage({
           </div>
         </div>
 
-        {/* Additional sections (e.g., Health Info Form, Healthy Habits, Today's Schedule, etc.) */}
+        {/* AI Suggestion Cards / Healthy Habits Section */}
+        {aiSuggestions && aiSuggestions.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+              Healthy Habits
+            </h2>
+            <div className="flex gap-4 justify-center">
+              {aiSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-40 flex flex-col justify-between"
+                >
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
+                    {suggestion}
+                  </p>
+                  <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
+                    AI Suggestion
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Additional sections (e.g., Health Info Form, Today's Schedule, etc.) */}
       </main>
 
       {/* Floating Chat Button */}
-      <div className="fixed bottom-20 right-4 z-50">
+      <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setShowChatbot(!showChatbot)}
           className="w-12 h-12 bg-teal-700 dark:bg-teal-500 rounded-full shadow flex items-center justify-center"
@@ -213,14 +244,20 @@ export default function HomePage({
       <nav className="fixed bottom-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 z-50 transition-colors">
         <div className="grid grid-cols-4 h-16">
           <button
-            onClick={() => switchTab("home")}
+            onClick={() => {
+              switchTab("home");
+              setShowChatbot(false);
+            }}
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "home" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-home-5-fill text-xl"></i>
             <span className="text-xs">Home</span>
           </button>
           <button
-            onClick={() => switchTab("ai")}
+            onClick={() => {
+              switchTab("ai");
+              setShowChatbot(!showChatbot);
+            }}
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "ai" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-robot-line text-xl"></i>
