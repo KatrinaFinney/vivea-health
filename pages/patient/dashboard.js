@@ -1,11 +1,18 @@
-// pages/patient/dashboard.js
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomePage from "../../src/components/HomePage";
 
 export default function Dashboard() {
   const router = useRouter();
   const { query } = router;
+
+  // Check for auth token on mount; if not present, redirect to login
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      router.push("/patient/login");
+    }
+  }, [router]);
 
   // Retrieve patient data from query parameters (or use defaults)
   const [patientName] = useState(query.patientName || "Sarah");
@@ -41,7 +48,7 @@ export default function Dashboard() {
   const switchTab = (tab) => setActiveTab(tab);
   const [showChatbot, setShowChatbot] = useState(false);
 
-  // For demo purposes, we can define some dummy AI suggestions.
+  // For demo, add some dummy AI suggestions
   const dummySuggestions = [
     "Drink more water",
     "Take a 10-minute walk",
@@ -53,7 +60,7 @@ export default function Dashboard() {
     <HomePage
       patientName={patientName}
       healthData={healthData}
-      aiSuggestions={dummySuggestions}  // Now we pass dummy suggestions so the cards appear
+      aiSuggestions={dummySuggestions}
       selectedMetric={selectedMetric}
       dummyData={dummyData}
       metricLabels={metricLabels}

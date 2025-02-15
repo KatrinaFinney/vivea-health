@@ -8,6 +8,10 @@ export default function SplashPage({ onShowForm }) {
     router.push("/patient/input");
   };
 
+  const navigateToLogin = () => {
+    router.push("/patient/login");
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-white"
@@ -38,6 +42,13 @@ export default function SplashPage({ onShowForm }) {
             className="bg-teal-700 text-white py-3 px-6 rounded w-4/5 glowing-button"
           >
             Tell Us About You
+          </button>
+          <div className="text-center text-gray-800">or</div>
+          <button
+            onClick={navigateToLogin}
+            className="bg-green-700 glowing-button text-white py-3 px-6 rounded w-4/5"
+          >
+            Log In
           </button>
         </div>
       </div>
