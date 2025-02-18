@@ -1,12 +1,21 @@
 // src/components/HomePage.js
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import Chatbot from "../../src/components/Chatbot"; // Adjust path if needed
+import HealthStatCard from "./HealthStatCard";
+import AddStatCard from "./AddStatCard";
+import VitalStatsManager from "./VitalStatsManager";
+import HabitDetailModal from "./HabitDetailModal";
+import AccountMenu from "./AccountMenu";
+import SettingsMenu from "./SettingsMenu";
+import Schedule from "./Schedule";
+import RecordsPanel from "./RecordsPanel";
+import RecordDetailModal from "./RecordDetailModal";
 
 export default function HomePage({
   patientName,
   healthData,
-  aiSuggestions,
+  aiSuggestions,  // Array of objects: { suggestion, detail }
   selectedMetric,
   dummyData,
   metricLabels,
@@ -20,6 +29,14 @@ export default function HomePage({
 }) {
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
+  const [showVitalStatsManager, setShowVitalStatsManager] = useState(false);
+  const [selectedHabit, setSelectedHabit] = useState(null);
+  const [showHabitModal, setShowHabitModal] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [showRecordsPanel, setShowRecordsPanel] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [showRecordModal, setShowRecordModal] = useState(false);
 
   // Initialize ECharts on mount
   useEffect(() => {
@@ -67,7 +84,7 @@ export default function HomePage({
     }
   }, [dummyData, selectedMetric]);
 
-  // Update chart when the selected metric changes
+  // Update chart when selectedMetric changes
   useEffect(() => {
     if (chartInstanceRef.current) {
       chartInstanceRef.current.setOption({
@@ -76,6 +93,36 @@ export default function HomePage({
     }
   }, [selectedMetric, dummyData]);
 
+  // Define health metrics array (for stat cards)
+  const healthMetrics = [
+    { key: "heartRate", name: "Heart Rate", value: 75, unit: "bpm", icon: "ri-heart-pulse-line", tooltip: "Beats per minute" },
+    { key: "bloodPressure", name: "Blood Pressure", value: "120/80", unit: "mmHg", icon: "ri-drop-line", tooltip: "Systolic/Diastolic" },
+    { key: "sleepQuality", name: "Sleep Quality", value: 7.5, unit: "hrs", icon: "ri-moon-line", tooltip: "Hours of sleep" },
+    { key: "bloodSugar", name: "Blood Sugar", value: 95, unit: "mg/dL", icon: "ri-water-flash-line", tooltip: "Glucose level" },
+    { key: "cholesterol", name: "Cholesterol", value: 180, unit: "mg/dL", icon: "ri-apple-line", tooltip: "Cholesterol level" },
+    { key: "bodyTemperature", name: "Body Temp", value: 98.6, unit: "°F", icon: "ri-temp-hot-line", tooltip: "Normal body temperature" },
+  ];
+
+  // Handler for healthy habits card click to show Habit Detail modal
+  const handleHabitClick = (habit) => {
+    setSelectedHabit(habit);
+    setShowHabitModal(true);
+  };
+
+  // Handler for record click in the Records Panel:
+  // Collapse the panel and then open the Record Detail modal.
+  const handleRecordClick = (record) => {
+    setShowRecordsPanel(false);
+    setSelectedRecord(record);
+    setShowRecordModal(true);
+  };
+
+  // When closing the Record Detail modal, re-show the records panel.
+  const handleRecordModalClose = () => {
+    setShowRecordModal(false);
+    setShowRecordsPanel(true);
+  };
+
   return (
     <>
       {/* Top Navigation */}
@@ -83,17 +130,27 @@ export default function HomePage({
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-4">
             <div className="font-['Pacifico'] text-teal-700 dark:text-teal-300 text-xl">
-              Vivea
+              Vivea 
             </div>
             <button
               onClick={toggleDarkMode}
               className="px-2 py-1 bg-gray-500 dark:bg-gray-700 text-white text-sm rounded"
             >
-              {darkMode ? "Light Mode" : "Dark Mode"}
+              {darkMode ? <i className="ri-sun-line" /> : <i className="ri-moon-line" />}
             </button>
           </div>
-          <div className="w-8 h-8 rounded-full bg-gray-400 dark:bg-gray-600 flex items-center justify-center">
-            <i className="ri-user-3-line text-teal-700 dark:text-teal-300"></i>
+          <div className="relative">
+            <button onClick={() => setShowAccountMenu(!showAccountMenu)}>
+              <div className="w-8 h-8 rounded-full bg-gray-400 dark:bg-gray-600 flex items-center justify-center">
+                <i className="ri-user-3-line text-teal-700 dark:text-teal-300"></i>
+              </div>
+            </button>
+            {showAccountMenu && (
+              <AccountMenu
+                patientName={patientName || "Sarah"}
+                onClose={() => setShowAccountMenu(false)}
+              />
+            )}
           </div>
         </div>
       </nav>
@@ -103,6 +160,26 @@ export default function HomePage({
         <div className="fixed bottom-20 right-4 z-40 w-[400px] h-[500px]">
           <Chatbot />
         </div>
+      )}
+
+      {/* Habit Detail Modal */}
+      {showHabitModal && selectedHabit && (
+        <HabitDetailModal habit={selectedHabit} onClose={() => setShowHabitModal(false)} />
+      )}
+
+      {/* Settings Menu */}
+      {showSettingsMenu && (
+        <SettingsMenu onClose={() => setShowSettingsMenu(false)} />
+      )}
+
+      {/* Records Panel (slides in from the right) */}
+      {showRecordsPanel && (
+        <RecordsPanel onClose={() => setShowRecordsPanel(false)} onRecordClick={handleRecordClick} />
+      )}
+
+      {/* Record Detail Modal */}
+      {showRecordModal && selectedRecord && (
+        <RecordDetailModal record={selectedRecord} onClose={handleRecordModalClose} />
       )}
 
       {/* Main Content */}
@@ -117,73 +194,46 @@ export default function HomePage({
           </p>
         </div>
 
-        {/* Health Cards */}
-        <div className="overflow-x-auto hide-scrollbar mb-6">
-          <div className="flex gap-4 justify-center w-full">
-            {/* Heart Rate Card */}
-            <div
-              onClick={() => onMetricChange("heartRate")}
-              className={`bg-white dark:bg-gray-800 shadow rounded-lg p-4 w-40 cursor-pointer ${
-                selectedMetric === "heartRate" ? "ring-2 ring-teal-500" : ""
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <i className="ri-heart-pulse-line text-teal-700 dark:text-teal-300"></i>
-                </div>
-                <span className="text-xs text-gray-800 dark:text-gray-300">Now</span>
+        {/* Health Stat Cards */}
+        {/* Mobile View: Horizontal scroll showing three cards at a time, centered */}
+        <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+          <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "100%" }}>
+            {healthMetrics.map((metric) => (
+              <div key={metric.key} className="flex-shrink-0 w-1/3">
+                <HealthStatCard
+                  metricName={metric.name}
+                  value={metric.value}
+                  unit={metric.unit}
+                  icon={metric.icon}
+                  tooltip={metric.tooltip}
+                  selected={selectedMetric === metric.key}
+                  onClick={() => onMetricChange(metric.key)}
+                />
               </div>
-              <p className="text-sm text-gray-800 dark:text-gray-300">Heart Rate</p>
-              <div className="flex items-end gap-1">
-                <span className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  75
-                </span>
-                <span className="text-sm text-gray-800 dark:text-gray-400 mb-1">bpm</span>
-              </div>
+            ))}
+            <div className="flex-shrink-0 w-1/3 flex items-center justify-center">
+              <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
             </div>
-
-            {/* Blood Pressure Card */}
-            <div
-              onClick={() => onMetricChange("bloodPressure")}
-              className={`bg-white dark:bg-gray-800 shadow rounded-lg p-4 w-40 cursor-pointer ${
-                selectedMetric === "bloodPressure" ? "ring-2 ring-teal-500" : ""
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <i className="ri-drop-line text-teal-700 dark:text-teal-300"></i>
-                </div>
-                <span className="text-xs text-gray-800 dark:text-gray-300">Today</span>
+          </div>
+        </div>
+        {/* Desktop View: Single row showing five stat cards plus the add card (6 items total), centered */}
+        <div className="hidden md:block overflow-x-auto hide-scrollbar mb-6 pr-4">
+          <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "calc(6 * 10rem + 5 * 1rem)" }}>
+            {healthMetrics.slice(0, 5).map((metric) => (
+              <div key={metric.key} className="flex-shrink-0 w-40">
+                <HealthStatCard
+                  metricName={metric.name}
+                  value={metric.value}
+                  unit={metric.unit}
+                  icon={metric.icon}
+                  tooltip={metric.tooltip}
+                  selected={selectedMetric === metric.key}
+                  onClick={() => onMetricChange(metric.key)}
+                />
               </div>
-              <p className="text-sm text-gray-800 dark:text-gray-300">Blood Pressure</p>
-              <div className="flex items-end gap-1">
-                <span className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  120/80
-                </span>
-                <span className="text-sm text-gray-800 dark:text-gray-400 mb-1">mmHg</span>
-              </div>
-            </div>
-
-            {/* Sleep Quality Card */}
-            <div
-              onClick={() => onMetricChange("sleepQuality")}
-              className={`bg-white dark:bg-gray-800 shadow rounded-lg p-4 w-40 cursor-pointer ${
-                selectedMetric === "sleepQuality" ? "ring-2 ring-teal-500" : ""
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <i className="ri-moon-line text-teal-700 dark:text-teal-300"></i>
-                </div>
-                <span className="text-xs text-gray-800 dark:text-gray-300">Last night</span>
-              </div>
-              <p className="text-sm text-gray-800 dark:text-gray-300">Sleep Quality</p>
-              <div className="flex items-end gap-1">
-                <span className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  7.5
-                </span>
-                <span className="text-sm text-gray-800 dark:text-gray-400 mb-1">hrs</span>
-              </div>
+            ))}
+            <div className="flex-shrink-0 w-40 flex items-center justify-center">
+              <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
             </div>
           </div>
         </div>
@@ -203,31 +253,64 @@ export default function HomePage({
           </div>
         </div>
 
-        {/* AI Suggestion Cards / Healthy Habits Section */}
+        {/* Schedule Component */}
+        <Schedule />
+
+        {/* Healthy Habits Section */}
         {aiSuggestions && aiSuggestions.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-              Healthy Habits
-            </h2>
-            <div className="flex gap-4 justify-center">
-              {aiSuggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-40 flex flex-col justify-between"
-                >
-                  <p className="text-sm text-gray-900 dark:text-gray-100">
-                    {suggestion}
-                  </p>
-                  <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
-                    AI Suggestion
-                  </span>
+          <>
+            {/* Desktop View: Horizontal scroll showing 8 habit cards, centered */}
+            <div className="hidden md:block mb-6 pr-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
+                Healthy Habits
+              </h2>
+              <div className="overflow-x-auto hide-scrollbar">
+                <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "calc(8 * 10rem + 7 * 1rem)" }}>
+                  {aiSuggestions.slice(0, 8).map((habit, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleHabitClick(habit)}
+                      className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-40 flex flex-col justify-between"
+                    >
+                      <p className="text-sm text-gray-900 dark:text-gray-100">
+                        {habit.suggestion}
+                      </p>
+                      <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
+                        AI Suggestion
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+            {/* Mobile View: Horizontal scroll showing 3 habit cards at a time, centered */}
+            <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
+                Healthy Habits
+              </h2>
+              <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "100%" }}>
+                {aiSuggestions.slice(0, 8).map((habit, index) => (
+                  <div key={index} className="flex-shrink-0 w-1/3">
+                    <div
+                      onClick={() => handleHabitClick(habit)}
+                      className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4"
+                      title="Click for more details"
+                    >
+                      <p className="text-sm text-gray-900 dark:text-gray-100">
+                        {habit.suggestion}
+                      </p>
+                      <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
+                        AI Suggestion
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         )}
 
-        {/* Additional sections (e.g., Health Info Form, Today's Schedule, etc.) */}
+        {/* Additional sections (e.g., Health Info Form, Records, etc.) */}
       </main>
 
       {/* Floating Chat Button */}
@@ -264,14 +347,17 @@ export default function HomePage({
             <span className="text-xs">AI Chat</span>
           </button>
           <button
-            onClick={() => switchTab("records")}
+            onClick={() => {
+              switchTab("records");
+              setShowRecordsPanel(true);
+            }}
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "records" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-file-list-line text-xl"></i>
             <span className="text-xs">Records</span>
           </button>
           <button
-            onClick={() => switchTab("settings")}
+            onClick={() => setShowSettingsMenu(!showSettingsMenu)}
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "settings" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-settings-line text-xl"></i>
@@ -279,6 +365,28 @@ export default function HomePage({
           </button>
         </div>
       </nav>
+
+      {/* Settings Menu (pops up from bottom-right) */}
+      {showSettingsMenu && (
+        <div className="fixed bottom-20 right-4 z-40">
+          <SettingsMenu onClose={() => setShowSettingsMenu(false)} />
+        </div>
+      )}
+
+      {/* Records Panel (slides in from the right) */}
+      {showRecordsPanel && (
+        <RecordsPanel onClose={() => setShowRecordsPanel(false)} onRecordClick={handleRecordClick} />
+      )}
+
+      {/* Record Detail Modal */}
+      {showRecordModal && selectedRecord && (
+        <RecordDetailModal record={selectedRecord} onClose={handleRecordModalClose} />
+      )}
+
+      {/* Vital Stats Manager Modal */}
+      {showVitalStatsManager && (
+        <VitalStatsManager onClose={() => setShowVitalStatsManager(false)} />
+      )}
     </>
   );
 }
