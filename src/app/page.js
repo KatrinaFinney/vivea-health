@@ -1,6 +1,20 @@
 // src/app/page.js
-import SplashPage from "../components/SplashPage";
+"use client";
+import SplashPage from "../src/components/SplashPage";
 
 export default function Page() {
-  return <SplashPage onLoginClick={() => console.log("Log In clicked")} onCreateAccountClick={() => console.log("Create Account clicked")} />;
+  const handleLoginClick = () => {
+    // Navigation logic, e.g., router.push("/patient/login")
+  };
+
+  const handleCreateAccountClick = () => {
+    // Navigation logic, e.g., router.push("/patient/input")
+  };
+
+  return (
+    <SplashPage 
+      onLoginClick={handleLoginClick}
+      onCreateAccountClick={handleCreateAccountClick}
+    />
+  );
 }
