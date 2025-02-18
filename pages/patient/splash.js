@@ -1,5 +1,5 @@
 // pages/patient/splash.js
-import SplashPage from "../../src/components/SplashPage";
+import SplashPage from "../../src/app/page";
 
 export default function Splash() {
   return <SplashPage />;
