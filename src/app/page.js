@@ -23,7 +23,8 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
       >
         <div className="text-center mb-8">
           {/* Using Montserrat for all text now */}
-          <h1 className="text-6xl font-bold text-primary">
+          <h1 className="text-6xl font-bold text-primary"
+          style={{ fontSize: "4rem" }}>
             Vivea Health
           </h1>
        </div>
