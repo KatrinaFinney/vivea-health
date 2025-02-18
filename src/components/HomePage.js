@@ -1,7 +1,8 @@
 // src/components/HomePage.js
-import { useEffect, useRef, useState } from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
-import Chatbot from "../../src/components/Chatbot"; // Adjust path if needed
+import Chatbot from "../../src/components/Chatbot"; // adjust path as needed
 import HealthStatCard from "./HealthStatCard";
 import AddStatCard from "./AddStatCard";
 import VitalStatsManager from "./VitalStatsManager";
@@ -15,7 +16,7 @@ import RecordDetailModal from "./RecordDetailModal";
 export default function HomePage({
   patientName,
   healthData,
-  aiSuggestions,  // Array of objects: { suggestion, detail }
+  aiSuggestions, // array of objects { suggestion, detail }
   selectedMetric,
   dummyData,
   metricLabels,
@@ -27,8 +28,11 @@ export default function HomePage({
   showChatbot,
   setShowChatbot,
 }) {
+  // References for the chart and animations
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
+
+  // Local state for various modals/menus
   const [showVitalStatsManager, setShowVitalStatsManager] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState(null);
   const [showHabitModal, setShowHabitModal] = useState(false);
@@ -38,7 +42,17 @@ export default function HomePage({
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [showRecordModal, setShowRecordModal] = useState(false);
 
-  // Initialize ECharts on mount and update when selectedMetric changes
+  // Sample health metrics for stat cards
+  const healthMetrics = [
+    { key: "heartRate", name: "Heart Rate", value: 75, unit: "bpm", icon: "ri-heart-pulse-line", tooltip: "Beats per minute" },
+    { key: "bloodPressure", name: "Blood Pressure", value: "120/80", unit: "mmHg", icon: "ri-drop-line", tooltip: "Systolic/Diastolic" },
+    { key: "sleepQuality", name: "Sleep Quality", value: 7.5, unit: "hrs", icon: "ri-moon-line", tooltip: "Hours of sleep" },
+    { key: "bloodSugar", name: "Blood Sugar", value: 95, unit: "mg/dL", icon: "ri-water-flash-line", tooltip: "Glucose level" },
+    { key: "cholesterol", name: "Cholesterol", value: 180, unit: "mg/dL", icon: "ri-apple-line", tooltip: "Cholesterol level" },
+    { key: "bodyTemperature", name: "Body Temp", value: 98.6, unit: "°F", icon: "ri-temp-hot-line", tooltip: "Normal body temperature" },
+  ];
+
+  // Initialize ECharts
   useEffect(() => {
     if (chartRef.current) {
       const instance = echarts.init(chartRef.current);
@@ -60,22 +74,20 @@ export default function HomePage({
           axisLabel: { formatter: "{value}", color: "#aaa" },
           splitLine: { lineStyle: { color: "#ccc" } },
         },
-        series: [
-          {
-            data: dummyData[selectedMetric],
-            type: "line",
-            smooth: true,
-            symbolSize: 8,
-            lineStyle: { color: "#00B5B5" },
-            itemStyle: { color: "#00B5B5" },
-            areaStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "rgba(0, 181, 181, 0.3)" },
-                { offset: 1, color: "rgba(0, 181, 181, 0.05)" },
-              ]),
-            },
+        series: [{
+          data: dummyData[selectedMetric],
+          type: "line",
+          smooth: true,
+          symbolSize: 8,
+          lineStyle: { color: "#00B5B5" },
+          itemStyle: { color: "#00B5B5" },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "rgba(0, 181, 181, 0.3)" },
+              { offset: 1, color: "rgba(0, 181, 181, 0.05)" },
+            ]),
           },
-        ],
+        }],
       };
       instance.setOption(option);
       const resizeChart = () => instance.resize();
@@ -87,22 +99,14 @@ export default function HomePage({
   useEffect(() => {
     if (chartInstanceRef.current) {
       chartInstanceRef.current.setOption({
-        series: [{ data: dummyData[selectedMetric] }],
+        series: [{
+          data: dummyData[selectedMetric],
+        }]
       });
     }
   }, [selectedMetric, dummyData]);
 
-  // Define health metrics for stat cards
-  const healthMetrics = [
-    { key: "heartRate", name: "Heart Rate", value: 75, unit: "bpm", icon: "ri-heart-pulse-line", tooltip: "Beats per minute" },
-    { key: "bloodPressure", name: "Blood Pressure", value: "120/80", unit: "mmHg", icon: "ri-drop-line", tooltip: "Systolic/Diastolic" },
-    { key: "sleepQuality", name: "Sleep Quality", value: 7.5, unit: "hrs", icon: "ri-moon-line", tooltip: "Hours of sleep" },
-    { key: "bloodSugar", name: "Blood Sugar", value: 95, unit: "mg/dL", icon: "ri-water-flash-line", tooltip: "Glucose level" },
-    { key: "cholesterol", name: "Cholesterol", value: 180, unit: "mg/dL", icon: "ri-apple-line", tooltip: "Cholesterol level" },
-    { key: "bodyTemperature", name: "Body Temp", value: 98.6, unit: "°F", icon: "ri-temp-hot-line", tooltip: "Normal body temperature" },
-  ];
-
-  // Handlers for modals and menus
+  // Handlers for modals
   const handleHabitClick = (habit) => {
     setSelectedHabit(habit);
     setShowHabitModal(true);
@@ -114,7 +118,6 @@ export default function HomePage({
     setShowRecordModal(true);
   };
 
-  // When closing the record detail modal, re-show the records panel
   const handleRecordModalClose = () => {
     setShowRecordModal(false);
     setShowRecordsPanel(true);
@@ -138,9 +141,9 @@ export default function HomePage({
           </div>
           <div className="relative">
             <button onClick={() => setShowAccountMenu(!showAccountMenu)}>
-            <div className="w-8 h-8 rounded-full bg-gray-500 dark:bg-gray-600 flex items-center justify-center">
-              <i className="ri-user-3-line text-teal-400 dark:text-teal-400"></i>
-            </div>
+              <div className="w-8 h-8 rounded-full bg-gray-500 dark:bg-gray-600 flex items-center justify-center">
+                <i className="ri-user-3-line text-primary dark:text-teal-300"></i>
+              </div>
             </button>
             {showAccountMenu && (
               <AccountMenu
@@ -169,7 +172,7 @@ export default function HomePage({
         <SettingsMenu onClose={() => setShowSettingsMenu(false)} />
       )}
 
-      {/* Records Panel (slides in from the right) */}
+      {/* Records Panel */}
       {showRecordsPanel && (
         <RecordsPanel onClose={() => setShowRecordsPanel(false)} onRecordClick={handleRecordClick} />
       )}
@@ -179,9 +182,13 @@ export default function HomePage({
         <RecordDetailModal record={selectedRecord} onClose={handleRecordModalClose} />
       )}
 
+      {/* Vital Stats Manager Modal */}
+      {showVitalStatsManager && (
+        <VitalStatsManager onClose={() => setShowVitalStatsManager(false)} />
+      )}
+
       {/* Main Content */}
       <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Montserrat, sans-serif" }}>
-        {/* Greeting */}
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
             Hello, {patientName || "Sarah"}
@@ -192,27 +199,31 @@ export default function HomePage({
         </div>
 
         {/* Health Stat Cards – Mobile View */}
-<div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
-  <div className="flex gap-4" style={{ paddingLeft: "1rem", minWidth: "calc(100% + 1rem)" }}>
-    {healthMetrics.map((metric) => (
-      <div key={metric.key} className="flex-shrink-0" style={{ width: "80%" }}>
-        <HealthStatCard
-          metricName={metric.name}
-          value={metric.value}
-          unit={metric.unit}
-          icon={metric.icon}
-          tooltip={metric.tooltip}
-          selected={selectedMetric === metric.key}
-          onClick={() => onMetricChange(metric.key)}
-        />
-      </div>
-    ))}
-    <div className="flex-shrink-0" style={{ width: "80%" }}>
-      <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
-    </div>
-  </div>
-</div>
-        {/* Desktop View: Single row showing five stat cards plus the add card (6 items total), centered */}
+        <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
+            Health Stats
+          </h2>
+          <div className="flex gap-4 justify-center pl-4" style={{ minWidth: "100vw" }}>
+            {healthMetrics.map((metric) => (
+              <div key={metric.key} className="flex-shrink-0" style={{ width: "33.33vw" }}>
+                <HealthStatCard
+                  metricName={metric.name}
+                  value={metric.value}
+                  unit={metric.unit}
+                  icon={metric.icon}
+                  tooltip={metric.tooltip}
+                  selected={selectedMetric === metric.key}
+                  onClick={() => onMetricChange(metric.key)}
+                />
+              </div>
+            ))}
+            <div className="flex-shrink-0" style={{ width: "33.33vw" }}>
+              <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
+            </div>
+          </div>
+        </div>
+
+        {/* Health Stat Cards – Desktop View */}
         <div className="hidden md:block overflow-x-auto hide-scrollbar mb-6 pr-4">
           <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "calc(6 * 10rem + 5 * 1rem)" }}>
             {healthMetrics.slice(0, 5).map((metric) => (
@@ -255,7 +266,7 @@ export default function HomePage({
         {/* Healthy Habits Section */}
         {aiSuggestions && aiSuggestions.length > 0 && (
           <>
-            {/* Desktop View: Horizontal scroll showing 8 habit cards, centered */}
+            {/* Desktop Healthy Habits */}
             <div className="hidden md:block mb-6 pr-4">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
                 Healthy Habits
@@ -279,34 +290,33 @@ export default function HomePage({
                 </div>
               </div>
             </div>
-          {/* Healthy Habits – Mobile View */}
-          <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
-              Healthy Habits
-            </h2>
-            <div className="flex gap-4 justify-start pl-4" style={{ minWidth: "100%" }}>
-              {aiSuggestions.slice(0, 8).map((habit, index) => (
-                <div key={index} className="flex-shrink-0 w-1/3">
-                  <div
-                    onClick={() => handleHabitClick(habit)}
-                    className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4"
-                    title="Click for more details"
-                  >
-                    <p className="text-sm text-gray-900 dark:text-gray-100">
-                      {habit.suggestion}
-                    </p>
-                    <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
-                      AI Suggestion
-                    </span>
+            {/* Mobile Healthy Habits */}
+            <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
+                Healthy Habits
+              </h2>
+              <div className="flex gap-4 justify-start pl-4" style={{ minWidth: "100vw" }}>
+                {aiSuggestions.slice(0, 8).map((habit, index) => (
+                  <div key={index} className="flex-shrink-0" style={{ width: "33.33vw" }}>
+                    <div
+                      onClick={() => handleHabitClick(habit)}
+                      className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4"
+                      title="Click for more details"
+                    >
+                      <p className="text-sm text-gray-900 dark:text-gray-100">
+                        {habit.suggestion}
+                      </p>
+                      <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
+                        AI Suggestion
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
           </>
         )}
 
-        {/* Additional sections (if any) */}
       </main>
 
       {/* Floating Chat Button */}
@@ -362,14 +372,14 @@ export default function HomePage({
         </div>
       </nav>
 
-      {/* Settings Menu (pops up from bottom-right) */}
+      {/* Settings Menu */}
       {showSettingsMenu && (
         <div className="fixed bottom-20 right-4 z-40">
           <SettingsMenu onClose={() => setShowSettingsMenu(false)} />
         </div>
       )}
 
-      {/* Records Panel (slides in from the right) */}
+      {/* Records Panel */}
       {showRecordsPanel && (
         <RecordsPanel onClose={() => setShowRecordsPanel(false)} onRecordClick={handleRecordClick} />
       )}

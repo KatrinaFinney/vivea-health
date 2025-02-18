@@ -1,4 +1,4 @@
-// src/components/InputPage.js
+"use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import gsap from "gsap";
@@ -18,10 +18,17 @@ export default function InputPage() {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
 
+  useEffect(() => {
+    console.log("InputPage: running GSAP animation");
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+    );
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Clear error for the field being edited
     setErrors((prev) => ({ ...prev, [name]: null }));
     if (name === "patientName") {
       setPatientName(value);
@@ -67,7 +74,7 @@ export default function InputPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
+      className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
       style={{ fontFamily: "Montserrat, sans-serif" }}
     >
       <div
@@ -145,7 +152,7 @@ export default function InputPage() {
               value={healthData.height}
               onChange={handleInputChange}
               className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
+            />{">"}
             {errors.height && (
               <p className="text-xs text-red-500 mt-1">{errors.height}</p>
             )}

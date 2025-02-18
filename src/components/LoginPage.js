@@ -1,7 +1,7 @@
-// src/components/LoginPage.js
+"use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
+import gsap from "gsap";
 
 export default function LoginPage({ onSubmit = () => {} }) {
   const router = useRouter();
@@ -11,6 +11,14 @@ export default function LoginPage({ onSubmit = () => {} }) {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
 
+  useEffect(() => {
+    console.log("LoginPage: running GSAP animation");
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+    );
+  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -33,7 +41,8 @@ export default function LoginPage({ onSubmit = () => {} }) {
     return newErrors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const validationErrors = validateInputs();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -44,9 +53,7 @@ export default function LoginPage({ onSubmit = () => {} }) {
     setTimeout(() => {
       // For demo: valid credentials are email: user@example.com, password: password
       if (email === "user@example.com" && password === "password") {
-        // Store a dummy auth token in localStorage
         localStorage.setItem("authToken", "dummy-token");
-        // Navigate to dashboard
         router.push("/patient/dashboard");
       } else {
         setErrors({ general: "Invalid email or password." });
@@ -57,7 +64,7 @@ export default function LoginPage({ onSubmit = () => {} }) {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
+      className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
       style={{ fontFamily: "Montserrat, sans-serif" }}
     >
       <div
@@ -71,35 +78,31 @@ export default function LoginPage({ onSubmit = () => {} }) {
           {errors.general && (
             <p className="text-xs text-red-500 text-center">{errors.general}</p>
           )}
-          <div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={handleChangeEmail}
-              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.email && (
-              <p className="text-xs text-red-500 mt-1">{errors.email}</p>
-            )}
-          </div>
-          <div>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={handleChangePassword}
-              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.password && (
-              <p className="text-xs text-red-500 mt-1">{errors.password}</p>
-            )}
-          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleChangeEmail}
+            className="w-full p-2 border border-gray-300 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+          {errors.email && (
+            <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+          )}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handleChangePassword}
+            className="w-full p-2 border border-gray-300 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+          {errors.password && (
+            <p className="text-xs text-red-500 mt-1">{errors.password}</p>
+          )}
           <button
             onClick={handleSubmit}
-            className="w-full bg-primary hover:bg-teal-600 text-white py-3 px-6 rounded shadow-lg transition-colors"
+            className="w-full bg-primary hover:bg-teal-600 text-white py-2 rounded shadow-lg transition-colors"
           >
             {isLoading ? "Logging in..." : "Log In"}
           </button>
