@@ -1,6 +1,6 @@
 // src/app/page.js
 "use client";
-import SplashPage from "../src/components/SplashPage";
+import SplashPage from "../components/SplashPage";
 
 export default function Page() {
   const handleLoginClick = () => {
