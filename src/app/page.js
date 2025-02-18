@@ -7,10 +7,17 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
   const router = useRouter();
   const containerRef = useRef(null);
 
-
-  // Fallback navigation functions if no onLoginClick / onCreateAccountClick are provided
+  // Fallback navigation functions if no props provided
   const navigateToLogin = onLoginClick || (() => router.push("/patient/login"));
   const navigateToCreate = onCreateAccountClick || (() => router.push("/patient/input"));
+
+  useEffect(() => {
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, scale: 0.8 },
+      { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" }
+    );
+  }, []);
 
   return (
     <div
@@ -21,18 +28,20 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
         ref={containerRef}
         className="border-4 border-gray-300 dark:border-gray-600 rounded-3xl p-6 w-[360px] min-h-[640px] flex flex-col justify-center mx-auto bg-white dark:bg-gray-900"
       >
-        <div className="text-center mb-8">
-          {/* Using Montserrat for all text now */}
-          <h1 className="text-6xl font-bold text-primary"
-          style={{ fontSize: "4rem" }}>
+        {/* Combined Header Section */}
+        <div className="text-center mb-4">
+          <h1
+            className="text-6xl font-bold text-primary"
+            style={{ fontSize: "4rem", marginBottom: "0.5rem" }}  // Reduced bottom margin
+          >
             Vivea Health
           </h1>
-       </div>
-       <div className="text-center mb-8">
-          <p className="mt-4 text-lg text-gray-800 dark:text-gray-300">
+          <p className="text-lg text-gray-800 dark:text-gray-300" style={{ marginTop: 0 }}>
             Your AI health guide
           </p>
         </div>
+
+        {/* Buttons */}
         <div className="flex flex-col items-center gap-6">
           <button
             onClick={navigateToLogin}
@@ -48,7 +57,7 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
             Create Account
           </button>
         </div>
-        </div>
       </div>
+    </div>
   );
 }
