@@ -38,7 +38,7 @@ export default function HomePage({
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [showRecordModal, setShowRecordModal] = useState(false);
 
-  // Initialize ECharts on mount
+  // Initialize ECharts on mount and update when selectedMetric changes
   useEffect(() => {
     if (chartRef.current) {
       const instance = echarts.init(chartRef.current);
@@ -84,7 +84,6 @@ export default function HomePage({
     }
   }, [dummyData, selectedMetric]);
 
-  // Update chart when selectedMetric changes
   useEffect(() => {
     if (chartInstanceRef.current) {
       chartInstanceRef.current.setOption({
@@ -93,7 +92,7 @@ export default function HomePage({
     }
   }, [selectedMetric, dummyData]);
 
-  // Define health metrics array (for stat cards)
+  // Define health metrics for stat cards
   const healthMetrics = [
     { key: "heartRate", name: "Heart Rate", value: 75, unit: "bpm", icon: "ri-heart-pulse-line", tooltip: "Beats per minute" },
     { key: "bloodPressure", name: "Blood Pressure", value: "120/80", unit: "mmHg", icon: "ri-drop-line", tooltip: "Systolic/Diastolic" },
@@ -103,21 +102,19 @@ export default function HomePage({
     { key: "bodyTemperature", name: "Body Temp", value: 98.6, unit: "°F", icon: "ri-temp-hot-line", tooltip: "Normal body temperature" },
   ];
 
-  // Handler for healthy habits card click to show Habit Detail modal
+  // Handlers for modals and menus
   const handleHabitClick = (habit) => {
     setSelectedHabit(habit);
     setShowHabitModal(true);
   };
 
-  // Handler for record click in the Records Panel:
-  // Collapse the panel and then open the Record Detail modal.
   const handleRecordClick = (record) => {
     setShowRecordsPanel(false);
     setSelectedRecord(record);
     setShowRecordModal(true);
   };
 
-  // When closing the Record Detail modal, re-show the records panel.
+  // When closing the record detail modal, re-show the records panel
   const handleRecordModalClose = () => {
     setShowRecordModal(false);
     setShowRecordsPanel(true);
@@ -129,8 +126,8 @@ export default function HomePage({
       <nav className="fixed top-0 w-full bg-white dark:bg-gray-800 z-50 border-b dark:border-gray-700 transition-colors">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-4">
-            <div className="font-['Pacifico'] text-teal-700 dark:text-teal-300 text-xl">
-              Vivea 
+            <div className="font-['Pacifico'] text-primary dark:text-teal-300 text-xl">
+              Vivea
             </div>
             <button
               onClick={toggleDarkMode}
@@ -142,7 +139,7 @@ export default function HomePage({
           <div className="relative">
             <button onClick={() => setShowAccountMenu(!showAccountMenu)}>
               <div className="w-8 h-8 rounded-full bg-gray-400 dark:bg-gray-600 flex items-center justify-center">
-                <i className="ri-user-3-line text-teal-700 dark:text-teal-300"></i>
+                <i className="ri-user-3-line text-primary dark:text-teal-300"></i>
               </div>
             </button>
             {showAccountMenu && (
@@ -283,34 +280,34 @@ export default function HomePage({
                 </div>
               </div>
             </div>
-            {/* Mobile View: Horizontal scroll showing 3 habit cards at a time, centered */}
-            <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
-                Healthy Habits
-              </h2>
-              <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "100%" }}>
-                {aiSuggestions.slice(0, 8).map((habit, index) => (
-                  <div key={index} className="flex-shrink-0 w-1/3">
-                    <div
-                      onClick={() => handleHabitClick(habit)}
-                      className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4"
-                      title="Click for more details"
-                    >
-                      <p className="text-sm text-gray-900 dark:text-gray-100">
-                        {habit.suggestion}
-                      </p>
-                      <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
-                        AI Suggestion
-                      </span>
-                    </div>
+          {/* Healthy Habits – Mobile View */}
+          <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 text-center mb-4">
+              Healthy Habits
+            </h2>
+            <div className="flex gap-4 justify-start pl-4" style={{ minWidth: "100%" }}>
+              {aiSuggestions.slice(0, 8).map((habit, index) => (
+                <div key={index} className="flex-shrink-0 w-1/3">
+                  <div
+                    onClick={() => handleHabitClick(habit)}
+                    className="cursor-pointer bg-white dark:bg-gray-800 shadow-xl border border-gray-300 dark:border-gray-600 rounded-lg p-4"
+                    title="Click for more details"
+                  >
+                    <p className="text-sm text-gray-900 dark:text-gray-100">
+                      {habit.suggestion}
+                    </p>
+                    <span className="text-xs text-gray-800 dark:text-gray-400 mt-2 block">
+                      AI Suggestion
+                    </span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+          </div>
           </>
         )}
 
-        {/* Additional sections (e.g., Health Info Form, Records, etc.) */}
+        {/* Additional sections (if any) */}
       </main>
 
       {/* Floating Chat Button */}

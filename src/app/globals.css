@@ -15,8 +15,11 @@
 }
 
 /* Apply the colors to the body */
+
 body {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--background); /* You can set these CSS variables dynamically or use Tailwind classes */
   color: var(--foreground);
-  background: var(--background);
 }
+
+/* If you prefer to use Tailwind utility classes, you might not need to set these here */

@@ -1,6 +1,7 @@
 // src/components/InputPage.js
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import gsap from "gsap";
 
 export default function InputPage() {
   const router = useRouter();
@@ -15,6 +16,17 @@ export default function InputPage() {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const containerRef = useRef(null);
+
+  // Run a GSAP animation on mount
+  useEffect(() => {
+    console.log("InputPage: running GSAP animation");
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+    );
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,12 +76,15 @@ export default function InputPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-white"
+      className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
       style={{ fontFamily: "Montserrat, sans-serif" }}
     >
-      <div className="border-4 border-gray-300 rounded-3xl p-4 w-[360px] min-h-[640px] flex flex-col justify-center mx-auto bg-[#F7F3EC]">
+      <div
+        ref={containerRef}
+        className="border-4 border-gray-300 dark:border-gray-600 rounded-3xl p-4 w-[360px] min-h-[640px] flex flex-col justify-center mx-auto bg-white dark:bg-gray-900"
+      >
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold text-primary">
             Create Your Account
           </h1>
         </div>
@@ -82,7 +97,7 @@ export default function InputPage() {
               placeholder="Your Name"
               value={patientName}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.patientName && (
               <p className="text-xs text-red-500 mt-1">{errors.patientName}</p>
@@ -96,7 +111,7 @@ export default function InputPage() {
               placeholder="Email"
               value={email}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.email && (
               <p className="text-xs text-red-500 mt-1">{errors.email}</p>
@@ -110,7 +125,7 @@ export default function InputPage() {
               placeholder="Password"
               value={password}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.password && (
               <p className="text-xs text-red-500 mt-1">{errors.password}</p>
@@ -124,7 +139,7 @@ export default function InputPage() {
               placeholder="Age"
               value={healthData.age}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.age && (
               <p className="text-xs text-red-500 mt-1">{errors.age}</p>
@@ -135,10 +150,10 @@ export default function InputPage() {
             <input
               type="text"
               name="height"
-              placeholder="Height (e.g., 5'9\)"
+              placeholder="Height (e.g., 5'9)"
               value={healthData.height}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.height && (
               <p className="text-xs text-red-500 mt-1">{errors.height}</p>
@@ -152,7 +167,7 @@ export default function InputPage() {
               placeholder="Weight (lbs)"
               value={healthData.weight}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.weight && (
               <p className="text-xs text-red-500 mt-1">{errors.weight}</p>
@@ -165,12 +180,12 @@ export default function InputPage() {
               placeholder="Existing Diagnoses (e.g., Diabetes, Hypertension)"
               value={healthData.conditions}
               onChange={handleInputChange}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             ></textarea>
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full bg-teal-700 text-white py-3 px-6 rounded"
+            className="w-full bg-primary hover:bg-teal-600 text-white py-3 px-6 rounded shadow-lg transition-colors"
           >
             {isLoading ? "Creating your account..." : "Create Account"}
           </button>

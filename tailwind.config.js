@@ -1,15 +1,16 @@
 // tailwind.config.js
 module.exports = {
-  darkMode: 'class', // enables toggling dark mode via the "dark" class
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,jsx,ts,tsx}",
-    "./src/components/**/*.{js,jsx,ts,tsx}",
+    "./src/components/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {
       colors: {
         primary: '#00B5B5',
         secondary: '#E6F7F7',
+        // Remove tan if not used, or adjust if needed.
       },
       borderRadius: {
         none: '0px',
@@ -21,9 +22,9 @@ module.exports = {
         '2xl': '24px',
         '3xl': '32px',
         full: '9999px',
-        button: '8px',
-      },
-    },
+        button: '8px'
+      }
+    }
   },
   plugins: [],
 };
