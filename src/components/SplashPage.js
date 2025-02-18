@@ -3,18 +3,25 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
 
-export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
+export default function SplashPage() {
   const router = useRouter();
   const containerRef = useRef(null);
 
   useEffect(() => {
-    console.log("SplashPage: running GSAP animation");
     gsap.fromTo(
       containerRef.current,
       { opacity: 0, scale: 0.8 },
       { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" }
     );
   }, []);
+
+  const navigateToLogin = () => {
+    router.push("/patient/login");
+  };
+
+  const navigateToCreate = () => {
+    router.push("/patient/input");
+  };
 
   return (
     <div
@@ -38,14 +45,14 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
         </div>
         <div className="flex flex-col items-center gap-6">
           <button
-            onClick={onLoginClick ? onLoginClick : () => router.push("/patient/login")}
+            onClick={navigateToLogin}
             className="bg-primary hover:bg-teal-600 text-white py-3 px-6 rounded w-4/5 transition-colors"
           >
             Log In
           </button>
           <div className="text-center text-gray-800 dark:text-gray-300">or</div>
           <button
-            onClick={onCreateAccountClick ? onCreateAccountClick : () => router.push("/patient/input")}
+            onClick={navigateToCreate}
             className="bg-primary hover:bg-teal-600 text-white py-3 px-6 rounded w-4/5 transition-colors"
           >
             Create Account
