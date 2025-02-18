@@ -1,19 +1,11 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
 import { useRouter } from "next/navigation";
 
 export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
   const router = useRouter();
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" }
-    );
-  }, []);
 
   // Fallback navigation functions if no onLoginClick / onCreateAccountClick are provided
   const navigateToLogin = onLoginClick || (() => router.push("/patient/login"));

@@ -1,7 +1,7 @@
 // src/components/LoginPage.js
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import gsap from "gsap";
+
 
 export default function LoginPage({ onSubmit = () => {} }) {
   const router = useRouter();
@@ -11,14 +11,6 @@ export default function LoginPage({ onSubmit = () => {} }) {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    console.log("LoginPage: running GSAP animation");
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
-    );
-  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);

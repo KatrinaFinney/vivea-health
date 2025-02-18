@@ -18,15 +18,6 @@ export default function InputPage() {
   const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
 
-  // Run a GSAP animation on mount
-  useEffect(() => {
-    console.log("InputPage: running GSAP animation");
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
-    );
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
