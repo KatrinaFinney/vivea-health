@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { useRouter } from "next/navigation";
 
 export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
@@ -21,12 +22,11 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
         className="border-4 border-gray-300 dark:border-gray-600 rounded-3xl p-6 w-[360px] min-h-[640px] flex flex-col justify-center mx-auto bg-white dark:bg-gray-900"
       >
         <div className="text-center mb-8">
-          <h1 className="text-6xl font-bold font-['Pacifico'] text-primary">
-            Welcome
+          {/* Using Montserrat for all text now */}
+          <h1 className="text-6xl font-bold text-primary">
+            Vivea Health
           </h1>
-          <p className="mt-2 text-3xl font-normal text-gray-800 dark:text-gray-300">
-            to Vivea Health
-          </p>
+       
           <p className="mt-4 text-sm text-gray-800 dark:text-gray-300">
             Your AI health guide
           </p>
