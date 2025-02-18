@@ -191,28 +191,27 @@ export default function HomePage({
           </p>
         </div>
 
-        {/* Health Stat Cards */}
-        {/* Mobile View: Horizontal scroll showing three cards at a time, centered */}
-        <div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
-          <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "100%" }}>
-            {healthMetrics.map((metric) => (
-              <div key={metric.key} className="flex-shrink-0 w-1/3">
-                <HealthStatCard
-                  metricName={metric.name}
-                  value={metric.value}
-                  unit={metric.unit}
-                  icon={metric.icon}
-                  tooltip={metric.tooltip}
-                  selected={selectedMetric === metric.key}
-                  onClick={() => onMetricChange(metric.key)}
-                />
-              </div>
-            ))}
-            <div className="flex-shrink-0 w-1/3 flex items-center justify-center">
-              <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
-            </div>
-          </div>
-        </div>
+        {/* Health Stat Cards – Mobile View */}
+<div className="md:hidden overflow-x-auto hide-scrollbar mb-6 pr-4">
+  <div className="flex gap-4" style={{ paddingLeft: "1rem", minWidth: "calc(100% + 1rem)" }}>
+    {healthMetrics.map((metric) => (
+      <div key={metric.key} className="flex-shrink-0" style={{ width: "80%" }}>
+        <HealthStatCard
+          metricName={metric.name}
+          value={metric.value}
+          unit={metric.unit}
+          icon={metric.icon}
+          tooltip={metric.tooltip}
+          selected={selectedMetric === metric.key}
+          onClick={() => onMetricChange(metric.key)}
+        />
+      </div>
+    ))}
+    <div className="flex-shrink-0" style={{ width: "80%" }}>
+      <AddStatCard onClick={() => setShowVitalStatsManager(true)} />
+    </div>
+  </div>
+</div>
         {/* Desktop View: Single row showing five stat cards plus the add card (6 items total), centered */}
         <div className="hidden md:block overflow-x-auto hide-scrollbar mb-6 pr-4">
           <div className="flex gap-4 justify-center pl-2" style={{ minWidth: "calc(6 * 10rem + 5 * 1rem)" }}>
