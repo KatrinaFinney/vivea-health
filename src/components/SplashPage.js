@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
 
-export default function SplashPage() {
+export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
   const router = useRouter();
   const containerRef = useRef(null);
 
@@ -15,17 +15,13 @@ export default function SplashPage() {
     );
   }, []);
 
-  const navigateToLogin = () => {
-    router.push("/patient/login");
-  };
-
-  const navigateToCreate = () => {
-    router.push("/patient/input");
-  };
+  // Fallback navigation functions if no onLoginClick / onCreateAccountClick are provided
+  const navigateToLogin = onLoginClick || (() => router.push("/patient/login"));
+  const navigateToCreate = onCreateAccountClick || (() => router.push("/patient/input"));
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900"
+      className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
       style={{ fontFamily: "Montserrat, sans-serif" }}
     >
       <div
