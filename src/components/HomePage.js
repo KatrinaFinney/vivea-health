@@ -138,9 +138,9 @@ export default function HomePage({
           </div>
           <div className="relative">
             <button onClick={() => setShowAccountMenu(!showAccountMenu)}>
-              <div className="w-8 h-8 rounded-full bg-gray-400 dark:bg-gray-600 flex items-center justify-center">
-                <i className="ri-user-3-line text-primary dark:text-teal-300"></i>
-              </div>
+            <div className="w-8 h-8 rounded-full bg-gray-500 dark:bg-gray-600 flex items-center justify-center">
+              <i className="ri-user-3-line text-teal-400 dark:text-teal-400"></i>
+            </div>
             </button>
             {showAccountMenu && (
               <AccountMenu
