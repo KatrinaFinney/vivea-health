@@ -26,8 +26,9 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
           <h1 className="text-6xl font-bold text-primary">
             Vivea Health
           </h1>
-       
-          <p className="mt-4 text-sm text-gray-800 dark:text-gray-300">
+       </div>
+       <div className="text-center mb-8">
+          <p className="mt-4 text-lg text-gray-800 dark:text-gray-300">
             Your AI health guide
           </p>
         </div>
@@ -46,7 +47,7 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
             Create Account
           </button>
         </div>
+        </div>
       </div>
-    </div>
   );
 }
