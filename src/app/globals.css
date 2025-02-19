@@ -17,7 +17,7 @@
 /* Apply the colors to the body */
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Bona Nova SC, serif";
   background-color: var(--background); /* You can set these CSS variables dynamically or use Tailwind classes */
   color: var(--foreground);
 }

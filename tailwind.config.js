@@ -23,8 +23,15 @@ module.exports = {
         '3xl': '32px',
         full: '9999px',
         button: '8px'
-      }
-    }
+      },
+      fontFamily: {
+            // Add a custom key for your font, e.g., 'prata'
+            BonaNovaSC: ["Bona Nova SC, serif"],
+            
+      },
+      
+    
   },
   plugins: [],
-};
+},
+}

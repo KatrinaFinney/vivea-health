@@ -65,7 +65,7 @@ export default function LoginPage({ onSubmit = () => {} }) {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
-      style={{ fontFamily: "Montserrat, sans-serif" }}
+      style={{ fontFamily: "Bona Nova SC, serif" }}
     >
       <div
         ref={containerRef}

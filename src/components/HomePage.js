@@ -2,7 +2,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
-import Chatbot from "../../src/components/Chatbot"; // adjust path as needed
+import Chatbot from "./Chatbot"; // adjust path as needed
 import HealthStatCard from "./HealthStatCard";
 import AddStatCard from "./AddStatCard";
 import VitalStatsManager from "./VitalStatsManager";
@@ -188,7 +188,7 @@ export default function HomePage({
       )}
 
       {/* Main Content */}
-      <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Montserrat, sans-serif" }}>
+      <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Bona Nova SC, serif" }}>
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
             Hello, {patientName || "Sarah"}

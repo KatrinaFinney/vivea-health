@@ -8,7 +8,7 @@ export default function AccountMenu({ patientName, onClose }) {
   const handleLogout = () => {
     // Remove auth token (dummy) and navigate to login page
     localStorage.removeItem("authToken");
-    router.push("/patient/login");
+    router.push("/");
   };
 
   return (
