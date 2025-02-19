@@ -3,7 +3,7 @@ export default function HabitDetailModal({ habit, onClose }) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg max-w-md w-full">
-          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+          <h2 className="text-xl font-bold lexend mb-4 text-gray-900 dark:text-gray-100">
             {habit.suggestion}
           </h2>
           <p className="text-sm text-gray-800 dark:text-gray-300 mb-4">

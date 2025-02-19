@@ -22,7 +22,7 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
-      style={{ fontFamily: "Bona Nova SC, serif" }}
+      style={{ fontFamily: "Lexend, serif" }}
     >
       <div
         ref={containerRef}
@@ -32,7 +32,7 @@ export default function SplashPage({ onLoginClick, onCreateAccountClick }) {
         <div className="text-center mb-4">
           <h1
             className="text-6xl font-bold text-primary"
-            style={{ fontSize: "4rem", marginBottom: "0.5rem" }}  // Reduced bottom margin
+            style={{ fontSize: "5rem", marginBottom: "2.5rem" }}  // Reduced bottom margin
           >
             Vivea Health
           </h1>

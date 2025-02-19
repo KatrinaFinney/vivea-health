@@ -14,7 +14,7 @@ export default function Chatbot() {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg h-full flex flex-col">
-      <div className="flex-1 mb-4 overflow-auto text-gray-900 dark:text-gray-100">
+      <div className="flex-1 mb-4 overflow-auto lexend text-gray-900 dark:text-gray-100">
         {chatHistory.length === 0 ? (
           <p className="text-sm">Your chat messages will appear here.</p>
         ) : (
@@ -31,11 +31,11 @@ export default function Chatbot() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Ask a health question?"
-          className="flex-1 p-2 border rounded-l-md focus:outline-none"
+          className="flex-1 lexend p-2 border rounded-l-md focus:outline-none"
         />
         <button
           onClick={handleSend}
-          className="bg-teal-700 text-white px-4 rounded-r-md"
+          className="bg-teal-700 text-white lexend px-4 rounded-r-md"
         >
           Send
         </button>

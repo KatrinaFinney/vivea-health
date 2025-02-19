@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 /* Define default (light mode) colors */
 :root {
@@ -17,9 +21,12 @@
 /* Apply the colors to the body */
 
 body {
-  font-family: "Bona Nova SC, serif";
+  font-family: "Lexend, serif";
   background-color: var(--background); /* You can set these CSS variables dynamically or use Tailwind classes */
   color: var(--foreground);
 }
 
 /* If you prefer to use Tailwind utility classes, you might not need to set these here */
+ .lexend {
+  font-family: "Lexend", serif !important;
+}

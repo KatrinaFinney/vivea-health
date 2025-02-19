@@ -11,10 +11,10 @@ export default function RecordsPanel({ onClose, onRecordClick }) {
     return (
       <div className="fixed top-16 right-0 z-50 h-full w-80 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300">
         <div className="relative p-4 border-b border-gray-300 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Patient Records</h2>
+          <h2 className="lexend text-xl font-bold text-gray-900 dark:text-gray-100">Patient Records</h2>
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 text-2xl text-gray-600 dark:text-gray-300"
+            className="absolute top-2 right-2 lexend text-2xl text-gray-600 dark:text-gray-300"
           >
             &times;
           </button>
@@ -26,9 +26,9 @@ export default function RecordsPanel({ onClose, onRecordClick }) {
               onClick={() => onRecordClick && onRecordClick(record)}
               className="mb-4 border border-gray-300 dark:border-gray-700 p-3 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{record.date}</p>
-              <p className="text-sm text-gray-800 dark:text-gray-300">{record.description}</p>
-              <p className="text-sm text-gray-800 dark:text-gray-300">Result: {record.result}</p>
+              <p className="text-sm lexend font-semibold text-gray-900 dark:text-gray-100">{record.date}</p>
+              <p className="text-sm lexend text-gray-800 dark:text-gray-300">{record.description}</p>
+              <p className="text-sm lexend text-gray-800 dark:text-gray-300">Result: {record.result}</p>
             </div>
           ))}
         </div>

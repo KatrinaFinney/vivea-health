@@ -50,8 +50,6 @@ export default function InputPage() {
     if (!healthData.age || isNaN(healthData.age) || Number(healthData.age) <= 0)
       newErrors.age = "Please enter a valid age.";
     if (!healthData.height.trim()) newErrors.height = "Height is required.";
-    if (!healthData.weight || isNaN(healthData.weight) || Number(healthData.weight) <= 0)
-      newErrors.weight = "Please enter a valid weight.";
     return newErrors;
   };
 
@@ -75,7 +73,7 @@ export default function InputPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-teal-800 dark:bg-teal-800"
-      style={{ fontFamily: "Bona Nova SC, serif" }}
+      style={{ fontFamily: "Lexend, serif" }}
     >
       <div
         ref={containerRef}
@@ -109,7 +107,7 @@ export default function InputPage() {
               placeholder="Email"
               value={email}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full p-2 border lexend border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             {errors.email && (
               <p className="text-xs text-red-500 mt-1">{errors.email}</p>
@@ -152,23 +150,9 @@ export default function InputPage() {
               value={healthData.height}
               onChange={handleInputChange}
               className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />{">"}
+            />{}
             {errors.height && (
               <p className="text-xs text-red-500 mt-1">{errors.height}</p>
-            )}
-          </div>
-          {/* Weight */}
-          <div>
-            <input
-              type="number"
-              name="weight"
-              placeholder="Weight (lbs)"
-              value={healthData.weight}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.weight && (
-              <p className="text-xs text-red-500 mt-1">{errors.weight}</p>
             )}
           </div>
           {/* Conditions */}

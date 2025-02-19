@@ -35,7 +35,6 @@ export default function Dashboard() {
   const [healthData] = useState({
     age: query.age || "",
     height: query.height || "",
-    weight: query.weight || "",
     conditions: query.conditions || "",
   });
 

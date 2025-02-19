@@ -25,8 +25,8 @@ module.exports = {
         button: '8px'
       },
       fontFamily: {
-            // Add a custom key for your font, e.g., 'prata'
-            BonaNovaSC: ["Bona Nova SC, serif"],
+        sans: ['Lexend', 'serif'], // Now all font-sans usage will be Lexend
+        serif: ['Lexend', 'serif'],
             
       },
       

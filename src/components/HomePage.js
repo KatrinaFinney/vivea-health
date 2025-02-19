@@ -129,7 +129,7 @@ export default function HomePage({
       <nav className="fixed top-0 w-full bg-white dark:bg-gray-800 z-50 border-b dark:border-gray-700 transition-colors">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-4">
-            <div className="font-['Pacifico'] text-primary dark:text-teal-300 text-xl">
+            <div className="font-['Lexend'] text-primary dark:text-teal-300 text-xl">
               Vivea
             </div>
             <button
@@ -188,7 +188,7 @@ export default function HomePage({
       )}
 
       {/* Main Content */}
-      <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Bona Nova SC, serif" }}>
+      <main className="pt-16 pb-32 px-4" style={{ fontFamily: "Lexend" }}>
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
             Hello, {patientName || "Sarah"}
@@ -340,7 +340,7 @@ export default function HomePage({
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "home" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-home-5-fill text-xl"></i>
-            <span className="text-xs">Home</span>
+            <span className="lexend text-xs">Home</span>
           </button>
           <button
             onClick={() => {
@@ -350,24 +350,24 @@ export default function HomePage({
             className={`flex flex-col items-center justify-center gap-1 ${activeTab === "ai" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-robot-line text-xl"></i>
-            <span className="text-xs">AI Chat</span>
+            <span className="lexend text-xs">AI Chat</span>
           </button>
           <button
             onClick={() => {
               switchTab("records");
               setShowRecordsPanel(true);
             }}
-            className={`flex flex-col items-center justify-center gap-1 ${activeTab === "records" ? "text-teal-700" : "text-gray-500"}`}
+            className={` lexend flex flex-col items-center justify-center gap-1 ${activeTab === "records" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-file-list-line text-xl"></i>
-            <span className="text-xs">Records</span>
+            <span className="lexend text-xs">Records</span>
           </button>
           <button
             onClick={() => setShowSettingsMenu(!showSettingsMenu)}
-            className={`flex flex-col items-center justify-center gap-1 ${activeTab === "settings" ? "text-teal-700" : "text-gray-500"}`}
+            className={`flex flex-col lexend items-center justify-center gap-1 ${activeTab === "settings" ? "text-teal-700" : "text-gray-500"}`}
           >
             <i className="ri-settings-line text-xl"></i>
-            <span className="text-xs">Settings</span>
+            <span className="lexend text-xs">Settings</span>
           </button>
         </div>
       </nav>
